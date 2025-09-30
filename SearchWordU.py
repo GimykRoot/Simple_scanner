@@ -1,8 +1,6 @@
-import shutil
 import os
 import re
 import pypdf
-import time
 
 class FileAnalise():
     def __init__(self,carr_path):               #take a path to work dir
