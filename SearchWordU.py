@@ -66,13 +66,13 @@ class FileAnalise():
 
     def search_link(self):
         url = r'https?://\S+(?<!\.)'
-        list_of_link = list(re.findall(url, self.content)
+        list_of_link = list(re.findall(url, self.content))
         if list_of_link:
             self.result_list.append((self.file_name, list_of_link))
 
     def search_specific_link(self):
         url = rf"https?://\S*{re.escape(self.item)}\S*"
-        list_of_link = list(re.findall(url, self.content)
+        list_of_link = list(re.findall(url, self.content))
         if list_of_link:
             self.result_list.append((self.file_name, list_of_link)) 
 
