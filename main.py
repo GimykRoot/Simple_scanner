@@ -9,5 +9,5 @@ if task_number!=1:
     item = input("Word:")
 else:
     item = ''
-Works1.make(task_list[task_number-1],item)
+Works1.work(task_list[task_number-1],item)
 
