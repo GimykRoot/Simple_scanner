@@ -18,6 +18,7 @@ class FileAnalise():
             self.file_name = docs_name
             self.current_file_path = os.path.join(self.current_path, docs_name)
             self.file_format_coordinate()
+        self.print_results()
     
     #func to get a list of files
     def extract_all_names(self):
@@ -77,7 +78,7 @@ class FileAnalise():
             self.result_list.append((self.file_name, list_of_link)) 
 
     def search_word(self):
-        if self.item in self.content and self.name not in self.result_list:
+        if self.item in self.content and self.file_name not in self.result_list:
             self.result_list.append(self.file_name)
             return
 
@@ -88,7 +89,6 @@ class FileAnalise():
                 for names in self.result_list:
                     print(f'File name:{self.result_list[0]}| Result of search:{self.result_list[0]}')
             case 2:
-                for names in self.result_list:
-                    print(f'File name:{self.result_list[0]}')
+                print(f'File name:{self.result_list[0]}')
             
         
