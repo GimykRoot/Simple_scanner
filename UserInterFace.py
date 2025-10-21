@@ -178,14 +178,60 @@ class FileManagerGUI(BoxLayout, FileAnalise):
     def open_function_dialog(self, function_name, dropdown):
         #Functions dialog menu
         dropdown.dismiss()
-        dialog = FunctionDialog(function_name)
+        task_index = self.list_of_functions_name.index(function_name)
+        dialog = FunctionDialog(task_index, self.current_path)
         dialog.open()
 
-  def show_error(self, message):
-    #correct Error return
-    popup = Popup(
-      title='Error',
-      content=Label(text=message) 
-      size_hint=(0.6, 0.4)
-    )
-    popup.open()
+    def select_directory(self, instance):
+        if HAS_PLYER:
+            try:
+                path = filechooser.choose_dir(title="Select a directory")
+                if path:
+                    self.current_path = Path(path[0])
+                    self.path_label.text = str(self.current_path)
+                    self.display_contents()
+            except Exception as e:
+                self.show_error(f"Path error: {str(e)}")
+        else:
+            #if without plyr
+            content = BoxLayout(orientation='vertical', padding=10, spacing=10)
+            content.add_widget(Label(text='Enter the path to the directory:'))
+            path_input = TextInput(multiline=False, size_hint_y=0.3)
+            content.add_widget(path_input)
+            btn_layout = BoxLayout(size_hint_y=0.3, spacing=10)
+
+            def confirm_path(instance):
+                path_text = path_input.text
+                if path_text and Path(path_text).exists():
+                    self.current_path = Path(path_text)
+                    self.path_label.text = str(self.current_path)
+                    self.display_content()
+                    popup.dismiss()
+                else:
+                    self.show_error("This path doesn't exist")
+
+            ok_btn = Button(text='OK')
+            ok_btn.bind(on_press=confirm_path)
+            btn_layout.add_widget(ok_btn)
+
+            cancel_btn = Button(text='Cancel')
+            cancel_btn.bind(on_press=lambda x: popup.dismiss())
+            btn_layout.add_widget(cancel_btn)
+
+            content.add_widget(btn_layout)
+
+            popup = Popup(
+                title='Directory selection',
+                content=content,
+                size_hint=(0.8, 0.4)
+            )
+            popup.open()
+
+    def show_error(self, message):
+        #correct Error return
+        popup = Popup(
+            title='Error',
+            content=Label(text=message) 
+            size_hint=(0.6, 0.4)
+        )
+        popup.open()
