@@ -5,7 +5,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
 
-from SearchWordU import FileAnalise
+from App.SearchWordU import FileAnalise
 
 class FunctionDialog(Popup, FileAnalise):
     """Functional menu of app"""
