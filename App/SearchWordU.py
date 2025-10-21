@@ -40,7 +40,7 @@ class FileAnalise():
     #that func get text from file and then go to main task
     def work_with_txt_file(self):
         with open(self.current_file_path, 'r', encoding='utf-8') as workFile:
-            self.content = workFile.read()
+            self.content_text = workFile.read()
             self.execute_the_task()
 
     def work_with_pdf_file(self):
