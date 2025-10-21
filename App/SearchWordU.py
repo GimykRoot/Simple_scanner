@@ -1,6 +1,7 @@
 import os
 import re
 import pypdf
+from docx import Document
 
 class FileAnalise():
     def __init__(self):
@@ -33,6 +34,8 @@ class FileAnalise():
                 self.work_with_txt_file()
             case 'pdf':
                 self.work_with_pdf_file()
+            case 'docx':
+                self.work_with_docx_file()
             case _:
                 self.error_list.append((self.file_name, 'Unsupported format error'))
                 return
@@ -42,6 +45,16 @@ class FileAnalise():
         with open(self.current_file_path, 'r', encoding='utf-8') as workFile:
             self.content_text = workFile.read()
             self.execute_the_task()
+
+    def work_with_docx_file(self):
+        doc = Document(self.current_file_path)
+        for par in doc.paragraphs:
+            raw_text = par.text
+            if raw_text:
+                normalized_text = ' '.join(raw_text.split()).lower()
+                self.content_text = normalized_text
+                self.execute_the_task()
+                self.hollow_check = False
 
     def work_with_pdf_file(self):
         try:
