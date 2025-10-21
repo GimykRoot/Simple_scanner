@@ -8,17 +8,17 @@ class FileAnalise():
         self.current_path = os.getcwd()
         
 
-    def work(self, task, item):
-        self.task = task
+    def work(self, task_index, path, item):
         self.item = item
-        self.task_index = self.list_of_functions_name.index(self.task)
+        self.task_index = task_index
+        self.task = self.list_of_functions_name[self.task_index]
         self.result_list = []
+        self.current_path = path
         self.extract_all_names()
         for docs_name in self.list_of_all_files:
             self.file_name = docs_name
             self.current_file_path = os.path.join(self.current_path, docs_name)
             self.file_format_coordinate()
-        self.print_results()
     
     #func to get a list of files
     def extract_all_names(self):
