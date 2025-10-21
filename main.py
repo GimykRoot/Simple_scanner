@@ -1,4 +1,4 @@
-from UserInterFace import FileManagerApp
+from App.UserInterFace import FileManagerApp
 
 def main():
     FileManagerApp().run()
