@@ -11,8 +11,8 @@ from kivy.uix.dropdown import DropDown
 from pathlib import Path
 from kivy.uix.image import Image
 
-from SearchWordU import FileAnalise
-from FuncManager import FunctionDialog
+from App.SearchWordU import FileAnalise
+from App.FuncManager import FunctionDialog
 
 try:
     from plyer import filechooser
