@@ -6,6 +6,10 @@ from kivy.uix.scrollview import ScrollView
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
+from kivy.uix.textinput import TextInput
+from kivy.uix.dropdown import DropDown
+from pathlib import Path
+from kivy.uix.image import Image
 from SearchWordU import FileAnalise
 
 class FileManagerApp(App):
