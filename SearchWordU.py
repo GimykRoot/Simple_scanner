@@ -13,6 +13,7 @@ class FileAnalise():
         self.task_index = task_index
         self.task = self.list_of_functions_name[self.task_index]
         self.result_list = []
+        self.error_list = []
         self.current_path = path
         self.extract_all_names()
         for docs_name in self.list_of_all_files:
@@ -33,7 +34,8 @@ class FileAnalise():
             case 'pdf':
                 self.work_with_pdf_file()
             case _:
-                print(f'File:{self.file_name}| Type Error')
+                self.error_list.append((self.file_name, 'Unsupported format error'))
+                return
 
     #that func get text from file and then go to main task
     def work_with_txt_file(self):
@@ -42,16 +44,19 @@ class FileAnalise():
             self.execute_the_task()
 
     def work_with_pdf_file(self):
-        self.content_all_pages = pypdf.PdfReader(self.current_file_path)
-        self.hollow_check = True #check for text in pdf file
+        try:
+            self.content_all_pages = pypdf.PdfReader(self.current_file_path)
+        except Exception as e:
+            self.error_list.append((self.file_name, 'PDF reading error'))
+            return
+        self.hollow_check = True
         for page in self.content_all_pages.pages:
-            self.content = page.extract_text()
-            if self.content:
+            raw_text = page.extract_text()
+            if raw_text:
+                normalized_text = ' '.join(raw_text.split()).lower()
+                self.content_text = normalized_text
                 self.execute_the_task()
                 self.hollow_check = False
-
-        if self.hollow_check:
-            print(f'File:{self.file_name}| PDF without text')
     
     def execute_the_task(self):
         
