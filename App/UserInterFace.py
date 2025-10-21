@@ -83,7 +83,7 @@ class FileManagerGUI(BoxLayout, FileAnalise):
             ".txt": 'icon/text.png',
             ".py": 'icon/python.png',
             ".pdf": 'icon/pdf.png',
-            ".doc": 'icon/doc.png',
+            ".docx": 'icon/doc.png',
             "default": 'icon/default.png'
         }
         self.setup_ui()
