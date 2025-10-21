@@ -78,6 +78,14 @@ class FileManagerGUI(BoxLayout, FileAnalise):
     self.padding = 10
     self.spacing = 10
     self.current_path= None
+    self.file_types = {
+            "folder": 'icon/folder.png',
+            ".txt": 'icon/text.png',
+            ".py": 'icon/python.png',
+            ".pdf": 'icon/pdf.png',
+            ".doc": 'icon/doc.png',
+            "default": 'icon/default.png'
+        }
     self.setup_ui()
 
   def setup_ui(self):
