@@ -10,6 +10,7 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.dropdown import DropDown
 from pathlib import Path
 from kivy.uix.image import Image
+
 from SearchWordU import FileAnalise
 
 try:
@@ -26,6 +27,48 @@ class FileManagerApp(App):
     Window.clearcolor = (0.61, 0.61, 0.71, 1)
     self.titel = 'InFile Searcher'
     return FileManagerGUI()
+
+class FileItem(BoxLayout):      #Viget to every file
+    def __init__(self, path, name, file_type, size, **kwargs):
+        super().__init__(**kwargs)
+        self.orientation = 'horizontal'
+        self.size_hint_y = None
+        self.height = 40
+        self.padding = 5
+        self.spacing = 10
+        # icon
+        icon = Image(
+            source=path,
+            size_hint=(None, None),
+            size=(32, 32)
+        )
+        self.add_widget(icon)
+        #name
+        name_label = Label(
+            text=name,
+            size_hint_x=0.5,
+            halign='left',
+            valign='middle'
+        )
+        name_label.bind(size=name_label.setter('text_size'))
+        self.add_widget(name_label)
+        #file type
+        type_label = Label(
+            text=file_type,
+            size_hint_x=0.25,
+            halign='center',
+            valign='middle'
+        )
+        self.add_widget(type_label)
+        #size
+        size_label = Label(
+            text=size,
+            size_hint_x=0.25,
+            halign='right',
+            valign='middle'
+        )
+        size_label.bind(size=size_label.setter('text_size'))
+        self.add_widget(size_label)
 
 class FileManagerGUI(BoxLayout, FileAnalise):
   
