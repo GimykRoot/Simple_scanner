@@ -12,7 +12,7 @@ from pathlib import Path
 from kivy.uix.image import Image
 
 from SearchWordU import FileAnalise
-from FuncManager import FunctionalDialog
+from FuncManager import FunctionDialog
 
 try:
     from plyer import filechooser
@@ -232,7 +232,7 @@ class FileManagerGUI(BoxLayout, FileAnalise):
         #correct Error return
         popup = Popup(
             title='Error',
-            content=Label(text=message) 
+            content=Label(text=message),
             size_hint=(0.6, 0.4)
         )
         popup.open()
