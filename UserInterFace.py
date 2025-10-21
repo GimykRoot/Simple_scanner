@@ -12,6 +12,13 @@ from pathlib import Path
 from kivy.uix.image import Image
 from SearchWordU import FileAnalise
 
+try:
+    from plyer import filechooser
+
+    HAS_PLYER = True
+except ImportError:
+    HAS_PLYER = False
+
 class FileManagerApp(App):
 
   def build(self):
