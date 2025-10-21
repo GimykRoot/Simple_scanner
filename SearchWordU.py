@@ -68,32 +68,21 @@ class FileAnalise():
             case 2:
                 self.search_word()
             case _:
-                print("Task error")
+                return
 
     def search_link(self):
         url = r'https?://\S+(?<!\.)'
-        list_of_link = list(re.findall(url, self.content))
+        list_of_link = list(re.findall(url, self.content_text))
         if list_of_link:
             self.result_list.append((self.file_name, list_of_link))
 
     def search_specific_link(self):
         url = rf"https?://\S*{re.escape(self.item)}\S*"
-        list_of_link = list(re.findall(url, self.content))
+        list_of_link = list(re.findall(url, self.content_text))
         if list_of_link:
             self.result_list.append((self.file_name, list_of_link)) 
 
     def search_word(self):
-        if self.item in self.content and self.file_name not in self.result_list:
+        if self.item in self.content_text and self.file_name not in self.result_list:
             self.result_list.append(self.file_name)
             return
-
-    def print_results(self):
-        print('RESULTS:')
-        match self.task_index:
-            case 0 | 1:
-                for names in self.result_list:
-                    print(f'File name:{self.result_list[0]}| Result of search:{self.result_list[0]}')
-            case 2:
-                print(f'File name:{self.result_list[0]}')
-            
-        
