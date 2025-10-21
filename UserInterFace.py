@@ -12,6 +12,7 @@ from pathlib import Path
 from kivy.uix.image import Image
 
 from SearchWordU import FileAnalise
+from FuncManager import FunctionalDialog
 
 try:
     from plyer import filechooser
@@ -27,7 +28,7 @@ class FileManagerApp(App):
         self.titel = 'InFile Searcher'
         return FileManagerGUI()
 
-class FileItem(BoxLayout):      #Viget to every file
+class FileItem(BoxLayout):      #widget for every file
     def __init__(self, path, name, file_type, size, **kwargs):
         super().__init__(**kwargs)
         self.orientation = 'horizontal'
