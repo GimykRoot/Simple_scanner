@@ -2,6 +2,8 @@ import os
 import re
 import pypdf
 from docx import Document
+import img2pdf
+from PIL import Image
 
 class FileAnalise():
     def __init__(self):
@@ -21,6 +23,12 @@ class FileAnalise():
             self.file_name = docs_name
             self.current_file_path = os.path.join(self.current_path, docs_name)
             self.file_format_coordinate()
+        if self.task_index==3:
+            if self.image_paths:
+                self.image_paths.sort()
+                self.pic_to_pdf(os.path.join(self.current_path, item))
+            else:
+                self.error_list.append(( 'exekution error', 'No one image in current directory'))
     
     #func to get a list of files
     def extract_all_names(self):
@@ -36,6 +44,8 @@ class FileAnalise():
                 self.work_with_pdf_file()
             case 'docx':
                 self.work_with_docx_file()
+            case 'png' | 'jpg' | 'jpeg':
+                self.image_paths.append(self.current_file_path)
             case _:
                 self.error_list.append((self.file_name, 'Unsupported format error'))
                 return
@@ -99,3 +109,7 @@ class FileAnalise():
         if self.item in self.content_text and self.file_name not in self.result_list:
             self.result_list.append(self.file_name)
             return
+
+    def pic_to_pdf(self, output_pdf_path):
+        with open(output_pdf_path, 'wb') as f:
+            f.write(img2pdf.convert(self.image_paths))
