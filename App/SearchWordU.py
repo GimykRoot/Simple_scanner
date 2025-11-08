@@ -41,6 +41,7 @@ class FileAnalise():
             'Img2PDF'
             ]
         }
+        self.number_of_tasks = len(self.task_list_universal)
         self.current_path = os.getcwd()
         
 
