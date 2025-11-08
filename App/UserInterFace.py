@@ -84,6 +84,9 @@ class FileManagerGUI(BoxLayout, FileAnalise):
             ".py": 'icon/python.png',
             ".pdf": 'icon/pdf.png',
             ".docx": 'icon/doc.png',
+            ".png": 'icon/png.png',
+            ".jpg": 'icon/jpg.png',
+            ".jpeg": 'icon/jpg.png',
             "default": 'icon/default.png'
         }
         self.setup_ui()
@@ -170,16 +173,15 @@ class FileManagerGUI(BoxLayout, FileAnalise):
     def show_function_menu(self, instance):
         #Menu with func
         dropdown = DropDown()
-        for func_name in ['List of all links', 'Search specific links', 'Search word']:
-            btn = Button(text=func_name, size_hint_y=None, height=44)
-            btn.bind(on_release=lambda btn, name=func_name: self.open_function_dialog(name, dropdown))
+        for index in range(self.number_of_tusks):
+            btn = Button(text=self.task_list_universal[index][5], size_hint_y=None, height=44)
+            btn.bind(on_release=lambda btn, name=self.task_list_universal[index][5]: self.open_function_dialog(index, dropdown))
             dropdown.add_widget(btn)
         dropdown.open(instance)
 
-    def open_function_dialog(self, function_name, dropdown):
+    def open_function_dialog(self, task_index, dropdown):
         #Functions dialog menu
         dropdown.dismiss()
-        task_index = self.list_of_functions_name.index(function_name)
         dialog = FunctionDialog(task_index, self.current_path)
         dialog.open()
 
