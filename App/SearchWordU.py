@@ -7,14 +7,47 @@ from PIL import Image
 
 class FileAnalise():
     def __init__(self):
-        self.list_of_functions_name = ['List of all links', 'Search specific links', 'Search word'] #list of all tasks
+        self.task_list_universal = {
+            0: [
+            'List of all links',
+            'What kind of site do you want to search:',
+            '.com, .eu',
+            ['File name:', 'List of links:'],
+            'List of all links error',
+            'List of links'
+            ],
+            1: [
+            'Search specific links',
+            'What site do you want to search:',
+            'reddit, gmail',
+            ['File name:', 'List of links:'],
+            'Search specific links error',
+            'Search specific links'
+            ],
+            2: [
+            'Search word',
+            'What word do you want to search:',
+            'traum, root',
+            ['Files with this word:'],
+            'Search word error',
+            'Search word'
+            ]
+            3: [
+            'Image to PDF',
+            'Enter the name of the future file:',
+            'Scan08.11.2025, Photo_pass',
+            ['The following file has been created:'],
+            'No one image in current directory',
+            'Img2PDF'
+            ]
+        }
         self.current_path = os.getcwd()
         
 
     def work(self, task_index, path, item):
         self.item = item
         self.task_index = task_index
-        self.task = self.list_of_functions_name[self.task_index]
+        self.task = self.task_list_universal[self.task_index][0]
         self.result_list = []
         self.error_list = []
         self.current_path = path
@@ -72,7 +105,6 @@ class FileAnalise():
         except Exception as e:
             self.error_list.append((self.file_name, 'PDF reading error'))
             return
-        self.hollow_check = True
         for page in self.content_all_pages.pages:
             raw_text = page.extract_text()
             if raw_text:
