@@ -173,7 +173,7 @@ class FileManagerGUI(BoxLayout, FileAnalise):
     def show_function_menu(self, instance):
         #Menu with func
         dropdown = DropDown()
-        for index in range(self.number_of_tusks):
+        for index in range(self.number_of_tasks):
             btn = Button(text=self.task_list_universal[index][5], size_hint_y=None, height=44)
             btn.bind(on_release=lambda btn, name=self.task_list_universal[index][5]: self.open_function_dialog(index, dropdown))
             dropdown.add_widget(btn)
