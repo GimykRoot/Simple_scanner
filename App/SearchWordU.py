@@ -10,7 +10,7 @@ class FileAnalise():
         self.task_list_universal = {
             0: [
             'List of all links',
-            'What kind of site do you want to search:',
+            'What kind of site do you want to see:',
             '.com, .eu',
             ['File name:', 'List of links:'],
             'List of all links error',
@@ -22,7 +22,7 @@ class FileAnalise():
             'reddit, gmail',
             ['File name:', 'List of links:'],
             'Search specific links error',
-            'Search specific links'
+            'Search links'
             ],
             2: [
             'Search word',
@@ -31,7 +31,7 @@ class FileAnalise():
             ['Files with this word:'],
             'Search word error',
             'Search word'
-            ]
+            ],
             3: [
             'Image to PDF',
             'Enter the name of the future file:',
@@ -50,6 +50,7 @@ class FileAnalise():
         self.task = self.task_list_universal[self.task_index][0]
         self.result_list = []
         self.error_list = []
+        self.image_paths = []
         self.current_path = path
         self.extract_all_names()
         for docs_name in self.list_of_all_files:
@@ -61,7 +62,7 @@ class FileAnalise():
                 self.image_paths.sort()
                 self.pic_to_pdf(os.path.join(self.current_path, item))
             else:
-                self.error_list.append(( 'exekution error', 'No one image in current directory'))
+                self.error_list.append(( 'execution error', 'No one image in current directory'))
     
     #func to get a list of files
     def extract_all_names(self):
