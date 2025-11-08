@@ -18,21 +18,32 @@ class FunctionDialog(Popup, FileAnalise):
             'What kind of site do you want to search:',
             '.com, .eu',
             ['File name:', 'List of links:'],
-            'List of all links error'
+            'List of all links error',
+            'List of links'
             ],
             1: [
             'Search specific links',
             'What site do you want to search:',
             'reddit, gmail',
             ['File name:', 'List of links:'],
-            'Search specific links error'
+            'Search specific links error',
+            'Search specific links'
             ],
             2: [
             'Search word',
             'What word do you want to search:',
             'traum, root',
             ['Files with this word:'],
-            'Search word error'
+            'Search word error',
+            'Search word'
+            ]
+            3: [
+            'Image to PDF',
+            'Enter the name of the future file:',
+            'Scan08.11.2025, Photo_pass',
+            ['The following file has been created:'],
+            'No one image in current directory',
+            'Img2PDF'
             ]
         }
         self.function_index = function_index
@@ -44,7 +55,7 @@ class FunctionDialog(Popup, FileAnalise):
 
         # Title
         title_label = Label(
-            text=self.task_list_universal[self.function_index][0],
+            text=self.task_list_universal[self.function_index][5],
             size_hint_y=0.2,
             font_size='20sp',
             bold=True
@@ -104,10 +115,12 @@ class FunctionDialog(Popup, FileAnalise):
                         f"{self.task_list_universal[self.function_index][3][0]} {item[0]} {self.task_list_universal[self.function_index][3][1]} {item[1]}"
                         for item in self.result_list
                     )
+                case 3:
+                    text_content = '\n'.join(f"{self.task_list_universal[self.function_index][3][0]} {item}.pdf")
         else:
             text_content = ''
         result_popup = Popup(
-            title='Results of search:',
+            title='Result:',
             content=Label(text=text_content),
             size_hint=(0.9, 0.3)
         )
