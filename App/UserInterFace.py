@@ -10,6 +10,8 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.dropdown import DropDown
 from pathlib import Path
 from kivy.uix.image import Image
+from kivy.properties import BooleanProperty, StringProperty
+from kivy.graphics import Color, Rectangle
 
 from App.SearchWordU import FileAnalise
 from App.FuncManager import FunctionDialog
@@ -29,6 +31,10 @@ class FileManagerApp(App):
         return FileManagerGUI()
 
 class FileItem(BoxLayout):      #widget for every file
+    selected = BooleanProperty(False)
+    name = StringProperty('')
+
+
     def __init__(self, path, name, file_type, size, **kwargs):
         super().__init__(**kwargs)
         self.orientation = 'horizontal'
@@ -36,6 +42,13 @@ class FileItem(BoxLayout):      #widget for every file
         self.height = 40
         self.padding = 5
         self.spacing = 10
+        self.name = name
+
+        with self.canvas.before:
+            self.bg_color = Color(0.1, 0.1, 0.1, 0)
+            self.bg_rect = Rectangle(size=self.size, pos=self.pos)
+        self.bind(pos=self.update_bg, size=self.update_bg)
+        self.bind(selected=self.on_select_change)
         # icon
         icon = Image(
             source=path,
@@ -69,6 +82,24 @@ class FileItem(BoxLayout):      #widget for every file
         )
         size_label.bind(size=size_label.setter('text_size'))
         self.add_widget(size_label)
+
+        
+    def update_bg(self, *args):
+        self.bg_rect.pos = self.pos
+        self.bg_rect.size = self.size
+
+    def on_select_change(self, instance, value):
+        if value:
+            self.bg_color.rgba = (0.2, 0.6, 1, 0.3)
+        else:
+            self.bg_color.rgba = (0.1, 0.1, 0.1, 0)
+
+    def on_touch_down(self, touch):
+        if self.collide_point(*touch.pos):
+            self.selected = not self.selected
+            return True
+        return super().on_touch_down(touch)
+
 
 class FileManagerGUI(BoxLayout, FileAnalise):
   
