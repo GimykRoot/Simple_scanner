@@ -206,7 +206,7 @@ class FileManagerGUI(BoxLayout, FileAnalise):
         dropdown = DropDown()
         for index in range(self.number_of_tasks):
             btn = Button(text=self.task_list_universal[index][5], size_hint_y=None, height=44)
-            btn.bind(on_release=lambda btn, name=self.task_list_universal[index][5]: self.open_function_dialog(index, dropdown))
+            btn.bind(on_release=lambda btn, name=self.task_list_universal[index][5], i = index: self.open_function_dialog(i, dropdown))
             dropdown.add_widget(btn)
         dropdown.open(instance)
 
