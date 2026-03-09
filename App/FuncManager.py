@@ -78,7 +78,7 @@ class FunctionDialog(Popup, FileAnalise):
                         )
                 case 1 | 0:
                     text_content = '\n'.join(
-                        f"{self.task_list_universal[self.function_index][3][0]} {item[0]} {self.task_list_universal[self.function_index][3][1]} {item[1]}"
+                        f"{self.task_list_universal[self.function_index][3][0]} {item[0]} \n {self.task_list_universal[self.function_index][3][1]} {item[1]}"
                         for item in self.result_list
                     )
                 case 3:
