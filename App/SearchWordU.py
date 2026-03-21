@@ -66,24 +66,29 @@ class FileAnalise():
     #func to get types of current file and directs to the appropriate function for working with each format
     def file_format_coordinate(self):
         self.file_type = ".".join(self.file_name.split(".")[-1:])
-        match self.file_type:
-            case 'txt':
-                self.work_with_txt_file()
-            case 'pdf':
-                self.work_with_pdf_file()
-            case 'docx':
-                self.work_with_docx_file()
-            case 'png' | 'jpg' | 'jpeg':
-                self.image_paths.append(self.current_file_path)
+        match self.task_index:
+            case 0 | 1:
+                match self.file_type:
+                    case 'txt':
+                        self.work_with_txt_file()
+                    case 'pdf':
+                        self.work_with_pdf_file()
+                    case 'docx':
+                        self.work_with_docx_file()
+                    case _:
+                        self.error_list.append((self.file_name, 'Unsupported format error'))
+                        return
+            case 2:
+                if self.file_type.lower() in ('png', 'jpg', 'jpeg'):
+                   self.image_paths.append(self.current_file_path)
             case _:
-                self.error_list.append((self.file_name, 'Unsupported format error'))
                 return
 
     #that func get text from file and then go to main task
     def work_with_txt_file(self):
         with open(self.current_file_path, 'r', encoding='utf-8') as workFile:
             self.content_text = workFile.read()
-            self.execute_the_task()
+            self.execute_the_search_task()
 
     def work_with_docx_file(self):
         doc = Document(self.current_file_path)
@@ -92,7 +97,7 @@ class FileAnalise():
             if raw_text:
                 normalized_text = ' '.join(raw_text.split()).lower()
                 self.content_text = normalized_text
-                self.execute_the_task()
+                self.execute_the_search_task()
                 self.hollow_check = False
 
     def work_with_pdf_file(self):
@@ -106,11 +111,11 @@ class FileAnalise():
             if raw_text:
                 normalized_text = ' '.join(raw_text.split()).lower()
                 self.content_text = normalized_text
-                self.execute_the_task()
+                self.execute_the_search_task()
                 self.hollow_check = False
     
-    def execute_the_task(self):
-        
+    def execute_the_search_task(self):
+        #coordinates text/link search in file
         match self.task_index:
             case 0:
                 self.search_specific_link()
@@ -142,6 +147,5 @@ class FileAnalise():
                 print (f"End list: {sorted_paths}")
                 f.write(img2pdf.convert(sorted_paths))
                 self.result_list.append(output_pdf_path)
-        
         except Exception as e:
             self.error_list.append(( 'execution error', f'Error creating PDF-file:{e}'))
