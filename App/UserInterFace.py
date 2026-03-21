@@ -138,6 +138,10 @@ class FileManagerGUI(BoxLayout, FileAnalise):
         )
         self.path_label.bind(size=self.path_label.setter('text_size'))
         top_layout.add_widget(self.path_label)
+        #refresh button
+        refresh_btn = Button(text='Refresh', size_hint_x=0.15)
+        refresh_btn.bind(on_press=lambda x: self.display_content())
+        top_layout.add_widget(refresh_btn)
         #Button for the fuction menu
         menu_btn = Button(text='Function menu', size_hint_x=0.2)
         menu_btn.bind(on_press=self.show_function_menu)
