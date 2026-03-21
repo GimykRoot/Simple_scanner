@@ -52,12 +52,12 @@ class FileAnalise():
                 continue
             self.current_file_path = os.path.join(self.current_path, docs_name)
             self.file_format_coordinate()
-        if self.task_index==3:
-            if self.image_paths:
-                self.image_paths.sort()
-                self.pic_to_pdf(os.path.join(self.current_path, item))
-            else:
-                self.error_list.append(( 'execution error', 'No one image in current directory'))
+        match self.task_index:
+            case 2:
+                if self.image_paths:
+                    self.pic_to_pdf(os.path.join(self.current_path, item))
+                else:
+                    self.error_list.append(( 'execution error', 'No one image in current directory'))
     
     #func to get a list of files
     def extract_all_names(self):
@@ -131,5 +131,17 @@ class FileAnalise():
             return
 
     def pic_to_pdf(self, output_pdf_path):
-        with open(output_pdf_path, 'wb') as f:
-            f.write(img2pdf.convert(self.image_paths))
+        #adding a file format
+        if not output_pdf_path.lower().endswith('.pdf'):
+                output_pdf_path += '.pdf'
+        valid_images = [img for img in self.image_paths if img.lower().endswith(('.png', '.jpg', '.jpeg'))] #checking image format
+        try:
+            sorted_paths = sorted(valid_images) #sorting
+            #convertation
+            with open(output_pdf_path, 'wb') as f:
+                print (f"End list: {sorted_paths}")
+                f.write(img2pdf.convert(sorted_paths))
+                self.result_list.append(output_pdf_path)
+        
+        except Exception as e:
+            self.error_list.append(( 'execution error', f'Error creating PDF-file:{e}'))
