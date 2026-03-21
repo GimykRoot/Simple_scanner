@@ -35,7 +35,7 @@ class FileItem(BoxLayout):      #widget for every file
     name = StringProperty('')
 
 
-    def __init__(self, path, name, file_type, size, **kwargs):
+    def __init__(self, full_path, icon_path, name, file_type, size, **kwargs):
         super().__init__(**kwargs)
         self.orientation = 'horizontal'
         self.size_hint_y = None
@@ -43,6 +43,7 @@ class FileItem(BoxLayout):      #widget for every file
         self.padding = 5
         self.spacing = 10
         self.name = name
+        self.full_path = full_path
 
         with self.canvas.before:
             self.bg_color = Color(0.1, 0.1, 0.1, 0)
@@ -51,7 +52,7 @@ class FileItem(BoxLayout):      #widget for every file
         self.bind(selected=self.on_select_change)
         # icon
         icon = Image(
-            source=path,
+            source=icon_path,
             size_hint=(None, None),
             size=(32, 32)
         )
@@ -96,7 +97,12 @@ class FileItem(BoxLayout):      #widget for every file
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
-            self.selected = not self.selected
+            if touch.is_double_tap:
+                from kivy.app import App
+                app = App.get_running_app()
+                app.root.change_directory(self.full_path)
+            else:
+                self.selected = not self.selected
             return True
         return super().on_touch_down(touch)
 
@@ -173,6 +179,7 @@ class FileManagerGUI(BoxLayout, FileAnalise):
             for folder in folders:
                 icon = self.file_types["folder"]
                 file_item = FileItem(
+                    full_path=folder,
                     path=icon,
                     name=f"{icon} {folder.name}",
                     file_type="Folder",
@@ -187,6 +194,7 @@ class FileManagerGUI(BoxLayout, FileAnalise):
                 file_type = ext if ext else "File"
 
                 file_item = FileItem(
+                    full_path=file,
                     path=icon,
                     name=f"{file.name}",
                     file_type=file_type,
@@ -266,6 +274,12 @@ class FileManagerGUI(BoxLayout, FileAnalise):
             )
             popup.open()
 
+    def change_directory(self, new_path):
+        if new_path.is_dir():
+            self.current_path = new_path
+            self.path_label.text = str(new_path)
+            self.display_content()
+            
     def show_error(self, message):
         #correct Error return
         popup = Popup(
