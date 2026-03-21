@@ -169,6 +169,7 @@ class FileManagerGUI(BoxLayout, FileAnalise):
             for folder in folders:
                 icon = self.file_types["folder"]
                 file_item = FileItem(
+                    path=icon,
                     name=f"{icon} {folder.name}",
                     file_type="Folder",
                     size=""
