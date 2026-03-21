@@ -4,6 +4,7 @@ from kivy.uix.label import Label
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
+import os
 
 from App.SearchWordU import FileAnalise
 
@@ -71,24 +72,32 @@ class FunctionDialog(Popup, FileAnalise):
         # Print results"""self.function_index != 2 and"""
         if self.result_list:
             match self.function_index:
-                case 2:
-                    text_content = '\n'.join(
-                        f"{self.task_list_universal[self.function_index][3][0]} {item}"
-                        for item in self.result_list
-                        )
-                case 1 | 0:
+                case 0:
                     text_content = '\n'.join(
                         f"{self.task_list_universal[self.function_index][3][0]} {item[0]} \n {self.task_list_universal[self.function_index][3][1]} {item[1]}"
                         for item in self.result_list
                     )
-                case 3:
-                    text_content = '\n'.join(f"{self.task_list_universal[self.function_index][3][0]} {item}.pdf")
+                case 1:
+                    text_content = '\n'.join(
+                        f"{self.task_list_universal[self.function_index][3][0]} {item}"
+                        for item in self.result_list
+                        )
+                case 2:
+                    if not item.lower().endswith('.pdf'):
+                        item += '.pdf'
+                    text_content = f"File {item} has been created successfully. \n Full path to the file: {os.path.join(self.path, item)} "
         else:
-            text_content = ''
+            text_content = 'No results'
         result_popup = Popup(
             title='Result:',
-            content=Label(text=text_content),
-            size_hint=(0.9, 0.3)
+            content=TextInput(
+                text=text_content,
+                readonly=True,     
+                background_color=(0, 0, 0, 0), 
+                foreground_color=(1, 1, 1, 1), 
+                border=(0, 0, 0, 0) 
+            ),
+            size_hint=(0.9, 0.5)
         )
         result_popup.open()
 
