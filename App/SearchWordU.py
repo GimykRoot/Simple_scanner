@@ -9,14 +9,6 @@ class FileAnalise():
     def __init__(self):
         self.task_list_universal = {
             0: [
-            'List of all links',
-            'What kind of site do you want to see:',
-            '.com, .eu',
-            ['File name:', 'List of links:'],
-            'List of all links error',
-            'List of links'
-            ],
-            1: [
             'Search specific links',
             'What site do you want to search:',
             'reddit, gmail',
@@ -24,7 +16,7 @@ class FileAnalise():
             'Search specific links error',
             'Search links'
             ],
-            2: [
+            1: [
             'Search word',
             'What word do you want to search:',
             'traum, root',
@@ -32,7 +24,7 @@ class FileAnalise():
             'Search word error',
             'Search word'
             ],
-            3: [
+            2: [
             'Image to PDF',
             'Enter the name of the future file:',
             'Scan08.11.2025, Photo_pass',
@@ -119,20 +111,12 @@ class FileAnalise():
         
         match self.task_index:
             case 0:
-                self.search_link()
-            case 1:
                 self.search_specific_link()
-            case 2:
+            case 1:
                 self.search_word()
             case _:
                 return
-
-    def search_link(self):
-        url = r'https?://\S+(?<!\.)'
-        list_of_link = list(re.findall(url, self.content_text))
-        if list_of_link:
-            self.result_list.append((self.file_name, list_of_link))
-
+                
     def search_specific_link(self):
         url = rf"https?://\S*{re.escape(self.item)}\S*"
         list_of_link = list(re.findall(url, self.content_text))
