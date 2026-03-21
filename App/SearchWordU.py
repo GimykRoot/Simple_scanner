@@ -48,6 +48,8 @@ class FileAnalise():
         self.extract_all_names()
         for docs_name in self.list_of_all_files:
             self.file_name = docs_name
+            if self.file_name.startswith("~$"):
+                continue
             self.current_file_path = os.path.join(self.current_path, docs_name)
             self.file_format_coordinate()
         if self.task_index==3:
