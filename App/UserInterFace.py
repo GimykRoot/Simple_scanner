@@ -115,15 +115,18 @@ class FileManagerGUI(BoxLayout, FileAnalise):
         self.padding = 10
         self.spacing = 10
         self.current_path= None
+        self.list_of_paths=[] #list with all paths for back/forth functions
+        self.current_path_number = 0
         self.file_types = {
             "folder": 'icon/folder.png',
             ".txt": 'icon/text.png',
             ".py": 'icon/python.png',
             ".pdf": 'icon/pdf.png',
             ".docx": 'icon/doc.png',
+            ".doc": 'icon/doc.png',
             ".png": 'icon/png.png',
-            ".jpg": 'icon/jpg.png',
-            ".jpeg": 'icon/jpg.png',
+            ".jpg": 'icon/img.png',
+            ".jpeg": 'icon/img.png',
             "default": 'icon/default.png'
         }
         self.setup_ui()
@@ -153,6 +156,22 @@ class FileManagerGUI(BoxLayout, FileAnalise):
         menu_btn.bind(on_press=self.show_function_menu)
         top_layout.add_widget(menu_btn)
         self.add_widget(top_layout)
+        #directory change functions
+        middle_layout = BoxLayout(orientation='horizontal', size_hint_y=0.05, spacing=10)
+        #Back
+        back_btn = Button(text='Back', size_hint_x=0.10)
+        back_btn.bind(on_press=lambda x: self.back_forth_up_function('back'))
+        middle_layout.add_widget(back_btn)
+        #Forth
+        forth_btn = Button(text='Forth', size_hint_x=0.10)
+        forth_btn.bind(on_press=lambda x: self.back_forth_up_function('forth'))
+        middle_layout.add_widget(forth_btn)
+        #Up
+        up_btn = Button(text='Up', size_hint_x=0.10)
+        up_btn.bind(on_press=lambda x: self.back_forth_up_function('up'))
+        middle_layout.add_widget(up_btn)
+        self.add_widget(middle_layout)
+        #File list
         # Names of labels
         header_layout = BoxLayout(orientation='horizontal', size_hint_y=0.05, spacing=10)
         header_layout.add_widget(Label(text='Name', size_hint_x=0.5, bold=True))
@@ -171,6 +190,8 @@ class FileManagerGUI(BoxLayout, FileAnalise):
         if not self.current_path:
             return
         try:
+            if not self.list_of_paths:
+                self.list_of_paths.append(self.current_path) #first opened directory
             items = list(self.current_path.iterdir())
             # Folder first, done then files
             folders = sorted([x for x in items if x.is_dir()], key=lambda x: x.name.lower())
@@ -273,12 +294,36 @@ class FileManagerGUI(BoxLayout, FileAnalise):
                 size_hint=(0.8, 0.4)
             )
             popup.open()
-
+            
+    def back_forth_up_function(self, direction):
+        match direction:
+            case 'back':
+                if 0<self.current_path_number:
+                    print(f'back')
+                    self.current_path_number -=1
+                    self.change_directory(self.list_of_paths[self.current_path_number], add_to_history=False)
+            case 'forth':
+                if self.current_path_number<len(self.list_of_paths)-1:
+                    print(f'forth')
+                    self.current_path_number +=1
+                    self.change_directory(self.list_of_paths[self.current_path_number], add_to_history=False)
+            case 'up':
+                parent = self.current_path.parent
+                if parent != self.current_path:
+                    self.change_directory(parent)
+            case _:
+                return
+                
     def change_directory(self, new_path):
-        if new_path.is_dir():
-            self.current_path = new_path
-            self.path_label.text = str(new_path)
-            self.display_content()
+        if not new_path.is_dir():
+            return
+        if add_to_history:
+            self.list_of_paths = self.list_of_paths[:self.current_path_number + 1]
+            self.list_of_paths.append(new_path)
+            self.current_path_number = len(self.list_of_paths) - 1
+        self.current_path = new_path
+        self.path_label.text = str(new_path)
+        self.display_content()
             
     def show_error(self, message):
         #correct Error return
