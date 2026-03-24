@@ -299,12 +299,10 @@ class FileManagerGUI(BoxLayout, FileAnalise):
         match direction:
             case 'back':
                 if 0<self.current_path_number:
-                    print(f'back')
                     self.current_path_number -=1
                     self.change_directory(self.list_of_paths[self.current_path_number], add_to_history=False)
             case 'forth':
                 if self.current_path_number<len(self.list_of_paths)-1:
-                    print(f'forth')
                     self.current_path_number +=1
                     self.change_directory(self.list_of_paths[self.current_path_number], add_to_history=False)
             case 'up':
@@ -314,7 +312,7 @@ class FileManagerGUI(BoxLayout, FileAnalise):
             case _:
                 return
                 
-    def change_directory(self, new_path):
+    def change_directory(self, new_path, add_to_history=True):
         if not new_path.is_dir():
             return
         if add_to_history:
