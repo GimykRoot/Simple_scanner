@@ -202,7 +202,7 @@ class FileManagerGUI(BoxLayout, FileAnalise):
                 file_item = FileItem(
                     full_path=folder,
                     path_to_icon=icon,
-                    name=f"{icon} {folder.name}",
+                    name=f"{folder.name}",
                     file_type="Folder",
                     size=""
                 )
