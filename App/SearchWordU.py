@@ -139,13 +139,14 @@ class FileAnalise():
         #adding a file format
         if not output_pdf_path.lower().endswith('.pdf'):
                 output_pdf_path += '.pdf'
-        valid_images = [img for img in self.image_paths if img.lower().endswith(('.png', '.jpg', '.jpeg'))] #checking image format
-        try:
-            sorted_paths = sorted(valid_images) #sorting
-            #convertation
-            with open(output_pdf_path, 'wb') as f:
-                print (f"End list: {sorted_paths}")
-                f.write(img2pdf.convert(sorted_paths))
-                self.result_list.append(output_pdf_path)
-        except Exception as e:
-            self.error_list.append(( 'execution error', f'Error creating PDF-file:{e}'))
+        list_for_current_dir = self.current_path.iterdir()
+        valid_images = [img for img in self.image_paths if img in list_for_current_dir] #checking image format
+        if valid_images:
+            try:
+                sorted_paths = sorted(valid_images) #sorting
+                #convertation
+                with open(output_pdf_path, 'wb') as f:
+                    f.write(img2pdf.convert(sorted_paths))
+                    self.result_list.append(output_pdf_path)
+            except Exception as e:
+                self.error_list.append(( 'Execution error', f'Error creating PDF-file:{e}'))
