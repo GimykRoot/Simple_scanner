@@ -47,10 +47,10 @@ class FileAnalise():
         self.current_path = path
         self.extract_all_names()
         for docs_name in self.list_of_all_files:
-            self.file_name = docs_name
-            if self.file_name.startswith("~$"):
+            if docs_name.name.startswith("~$"):
                 continue
-            self.current_file_path = os.path.join(self.current_path, docs_name)
+            self.file_name = docs_name.name
+            self.current_file_path = docs_name
             self.file_format_coordinate()
         match self.task_index:
             case 2:
@@ -61,25 +61,25 @@ class FileAnalise():
     
     #func to get a list of files
     def extract_all_names(self):
-        self.list_of_all_files = os.listdir(self.current_path)
+        self.list_of_all_files = list(self.current_path.rglob('*'))
 
     #func to get types of current file and directs to the appropriate function for working with each format
     def file_format_coordinate(self):
-        self.file_type = ".".join(self.file_name.split(".")[-1:])
+        self.file_type = self.current_file_path.suffix
         match self.task_index:
             case 0 | 1:
                 match self.file_type:
-                    case 'txt':
+                    case '.txt':
                         self.work_with_txt_file()
-                    case 'pdf':
+                    case '.pdf':
                         self.work_with_pdf_file()
-                    case 'docx':
+                    case '.docx':
                         self.work_with_docx_file()
                     case _:
                         self.error_list.append((self.file_name, 'Unsupported format error'))
                         return
             case 2:
-                if self.file_type.lower() in ('png', 'jpg', 'jpeg'):
+                if self.file_type.lower() in ('.png', '.jpg', '.jpeg'):
                    self.image_paths.append(self.current_file_path)
             case _:
                 return
@@ -128,11 +128,11 @@ class FileAnalise():
         url = rf"https?://\S*{re.escape(self.item)}\S*"
         list_of_link = list(re.findall(url, self.content_text))
         if list_of_link:
-            self.result_list.append((self.file_name, list_of_link)) 
+            self.result_list.append((self.current_file_path.relative_to(self.current_path), list_of_link)) 
 
     def search_word(self):
         if self.item in self.content_text and self.file_name not in self.result_list:
-            self.result_list.append(self.file_name)
+            self.result_list.append(self.current_file_path.relative_to(self.current_path))
             return
 
     def pic_to_pdf(self, output_pdf_path):
