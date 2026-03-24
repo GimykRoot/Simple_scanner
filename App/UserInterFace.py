@@ -25,7 +25,7 @@ except ImportError:
 class FileManagerApp(App):
 
     def build(self):
-        Window.size = (600, 800)
+        Window.size = (600, 600)
         Window.clearcolor = (0.61, 0.61, 0.71, 1)
         self.titel = 'InFile Searcher'
         return FileManagerGUI()
@@ -35,7 +35,7 @@ class FileItem(BoxLayout):      #widget for every file
     name = StringProperty('')
 
 
-    def __init__(self, full_path, icon_path, name, file_type, size, **kwargs):
+    def __init__(self, full_path, path_to_icon, name, file_type, size, **kwargs):
         super().__init__(**kwargs)
         self.orientation = 'horizontal'
         self.size_hint_y = None
@@ -52,7 +52,7 @@ class FileItem(BoxLayout):      #widget for every file
         self.bind(selected=self.on_select_change)
         # icon
         icon = Image(
-            source=icon_path,
+            source=path_to_icon,
             size_hint=(None, None),
             size=(32, 32)
         )
@@ -201,7 +201,7 @@ class FileManagerGUI(BoxLayout, FileAnalise):
                 icon = self.file_types["folder"]
                 file_item = FileItem(
                     full_path=folder,
-                    path=icon,
+                    path_to_icon=icon,
                     name=f"{icon} {folder.name}",
                     file_type="Folder",
                     size=""
@@ -216,7 +216,7 @@ class FileManagerGUI(BoxLayout, FileAnalise):
 
                 file_item = FileItem(
                     full_path=file,
-                    path=icon,
+                    path_to_icon=icon,
                     name=f"{file.name}",
                     file_type=file_type,
                     size=size
